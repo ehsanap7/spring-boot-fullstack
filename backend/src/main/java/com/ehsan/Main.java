@@ -9,15 +9,12 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @SpringBootApplication
 public class Main {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext configurableApplicationContext =
-                SpringApplication.run(Main.class, args);
+        SpringApplication.run(Main.class, args);
+
     }
 
 //    @Bean
