@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     public List<Customer> getCustomers() {
         var sql = """
                 select id, name, email, age
-                from customerqq
+                from customer
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
     }
