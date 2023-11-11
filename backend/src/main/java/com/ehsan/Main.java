@@ -7,10 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class Main {
@@ -20,14 +16,14 @@ public class Main {
                 SpringApplication.run(Main.class, args);
     }
 
-//    @Bean
-//    public CommandLineRunner runner(ICustomerRepository iCustomerRepository) {
-//        return args -> {
-//            iCustomerRepository.save(new Customer("Ehsan","eap.it95@gmail.com",27));
-//            iCustomerRepository.save(new Customer("Saeed","saeed.it95@gmail.com",27));
-//            iCustomerRepository.save(new Customer("Hamid","hamid.it95@gmail.com",27));
-//        };
-//    }
+    @Bean
+    public CommandLineRunner runner(ICustomerRepository iCustomerRepository) {
+        return args -> {
+            iCustomerRepository.save(new Customer("Ehsan","eap.it95@gmail.com",27));
+            iCustomerRepository.save(new Customer("Saeed","saeed.it95@gmail.com",27));
+            iCustomerRepository.save(new Customer("Hamid","hamid.it95@gmail.com",27));
+        };
+    }
 
 
 }
