@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "ehsanap-api",
-      "image": "ehsanap/ehsanap-api:11.11.2023.01.54.57",
+      "image": "ehsanap/ehsanap-api:11.11.2023.02.04.19",
       "essential": true,
       "memory": 512,
       "portMappings": [
