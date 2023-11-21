@@ -43,7 +43,7 @@ jobs:
               ${{ secrets.DOCKERHUB_USERNAME }}/ehsanap-react:latest
           build-args: |
             api_base_url=http://ehsanap.us-east-1.elasticbeanstalk.com:8080
-            platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
 
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
