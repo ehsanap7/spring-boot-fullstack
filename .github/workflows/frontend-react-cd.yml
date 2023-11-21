@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
       - name: List files in frontend/react
-        run: ls -l /frontend/react
+        run: ls -l .
 
       - name: Docker Build and Publish
         uses: docker/build-push-action@v2
