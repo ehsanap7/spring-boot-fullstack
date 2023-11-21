@@ -29,6 +29,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
+
+      - name: Setup Docker Buildx
+        run: |
+          docker buildx create --name mybuilder --use
+          docker buildx inspect mybuilder --bootstrap
+           
+
       - name: Docker Build and Publish Second
         run: |
           ls
