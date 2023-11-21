@@ -15,7 +15,7 @@
     },
     {
       "name": "ehsanap-api",
-      "image": "ehsanap/ehsanap-api:latest",
+      "image": "ehsanap/ehsanap-api:21.11.2023.04.26.05",
       "essential": true,
       "memory": 512,
       "portMappings": [
