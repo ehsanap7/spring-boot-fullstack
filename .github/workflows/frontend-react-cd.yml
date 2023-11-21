@@ -29,22 +29,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-      - name: List files in frontend/react
-        run: ls -l
-
-      - name: Docker Build and Publish
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./frontend/react/Dockerfile
-          push: true
-          tags: |
-              ${{ secrets.DOCKERHUB_USERNAME }}/ehsanap-react:${{ steps.build-number.outputs.BUILD_NUMBER }}
-              ${{ secrets.DOCKERHUB_USERNAME }}/ehsanap-react:latest
-          build-args: |
-            api_base_url=http://ehsanap.us-east-1.elasticbeanstalk.com:8080
-          platforms: linux/amd64,linux/arm64
-
       - name: Docker Build and Publish Second
         run: |
           ls
