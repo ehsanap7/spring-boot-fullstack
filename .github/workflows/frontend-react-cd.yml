@@ -31,8 +31,8 @@ jobs:
 
       - name: Docker Build and Publish
         run: |
-          ls ../../.ci/
-          chmod +x ../../.ci/build-publish.sh
+          cd ../../.ci/
+          chmod +x build-publish.sh
           ls
           USERNAME=ehsanap \
           REPO=ehsanap-react \
