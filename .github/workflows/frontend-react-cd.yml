@@ -33,7 +33,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
 
       - name: List directory contents
-        run: ls -la ./frontend/react
+        run: ls
 
       - name: Docker Build and Publish
         uses: docker/build-push-action@v2
