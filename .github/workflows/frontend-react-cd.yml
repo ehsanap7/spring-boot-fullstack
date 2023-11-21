@@ -45,6 +45,17 @@ jobs:
             api_base_url=http://ehsanap.us-east-1.elasticbeanstalk.com:8080
           platforms: linux/amd64,linux/arm64
 
+      - name: Docker Build and Publish
+        run: |
+          ls
+          chmod +x ../../.ci/build-publish.sh
+          USERNAME=ehsanap \
+          REPO=ehsanap-react \
+          TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
+          ../../ci/build-publish.sh . \
+            --build-arg api_base_url=http://ehsanap.us-east-1.elasticbeanstalk.com:8080
+
+
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
