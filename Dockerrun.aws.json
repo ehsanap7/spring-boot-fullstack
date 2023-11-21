@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "ehsanap-react",
-      "image": "ehsanap/ehsanap-react:latest",
+      "image": "ehsanap/ehsanap-react:",
       "essential": true,
       "memory": 256,
       "portMappings": [
