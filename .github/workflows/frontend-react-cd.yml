@@ -45,7 +45,7 @@ jobs:
             api_base_url=http://ehsanap.us-east-1.elasticbeanstalk.com:8080
           platforms: linux/amd64,linux/arm64
 
-      - name: Docker Build and Publish
+      - name: Docker Build and Publish Second
         run: |
           ls
           chmod +x ../../.ci/build-publish.sh
