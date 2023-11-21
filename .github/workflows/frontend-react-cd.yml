@@ -32,7 +32,7 @@ jobs:
       - name: Docker Build and Publish Second
         run: |
           ls
-          chmod +x ../../.ci/build-publish.sh
+          chmod +x ./ci/build-publish.sh
           USERNAME=ehsanap \
           REPO=ehsanap-react \
           TAG=${{ steps.build-number.outputs.BUILD_NUMBER }} \
