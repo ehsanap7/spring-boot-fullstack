@@ -26,8 +26,17 @@ public class CustomerRepository implements CustomerDAO {
     }
 
     @Override
-    public void insertCustomer(Customer customer) {
+    public Customer insertCustomer(Customer customer) {
+        return iCustomerRepository.save(customer);
+    }
+    @Override
+    public Customer updateCustomer(Customer customer) {
+        return iCustomerRepository.save(customer);
+    }
 
+    @Override
+    public void deleteCustomer(Customer customer) {
+        iCustomerRepository.delete(customer);
     }
 
     @Override

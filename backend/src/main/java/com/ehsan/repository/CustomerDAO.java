@@ -9,7 +9,9 @@ import java.util.Optional;
 public interface CustomerDAO {
     public List<Customer> getCustomers();
     public Optional<Customer> getCustomer(Integer id);
-    void insertCustomer(Customer customer);
+    Customer insertCustomer(Customer customer);
+    Customer updateCustomer(Customer customer);
+    void deleteCustomer(Customer customer);
     boolean existsCustomerByEmail(@Param("email") String email);
     boolean existsCustomerById(Integer id);
 

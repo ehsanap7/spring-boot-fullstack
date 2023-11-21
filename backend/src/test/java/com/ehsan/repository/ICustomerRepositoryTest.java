@@ -2,6 +2,7 @@ package com.ehsan.repository;
 
 import com.ehsan.AbstractTestContainer;
 import com.ehsan.model.customer.Customer;
+import com.ehsan.model.enums.Gender;
 import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,8 @@ class ICustomerRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 emial,
-                20
+                20,
+                Gender.MALE
         );
 
         underTest.save(customer);
@@ -66,7 +68,8 @@ class ICustomerRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 emial,
-                20
+                20,
+                Gender.MALE
         );
 
         underTest.save(customer);

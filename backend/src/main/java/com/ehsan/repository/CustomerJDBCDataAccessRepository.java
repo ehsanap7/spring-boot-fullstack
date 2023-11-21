@@ -20,7 +20,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     @Override
     public List<Customer> getCustomers() {
         var sql = """
-                select id, name, email, age
+                select id, name, email, age, gender
                 from customer
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
@@ -29,7 +29,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     @Override
     public Optional<Customer> getCustomer(Integer id) {
         var sql = """
-                select id, name, email, age
+                select id, name, email, age, gender
                 from customer
                 where id = ?
                 """;
@@ -37,16 +37,28 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     }
 
     @Override
-    public void insertCustomer(Customer customer) {
+    public Customer insertCustomer(Customer customer) {
         var sql = """
-                INSERT INTO customer (name, email, age)
-                values (?,?,?)
+                INSERT INTO customer (name, email, age, gender)
+                values (?,?,?,?)
                 """;
         int result = jdbcTemplate.update(sql,
                 customer.getName(),
                 customer.getEmail(),
-                customer.getAge()
-                );
+                customer.getAge(),
+                customer.getGender().name()
+        );
+        return getCustomer(result).orElseThrow();
+    }
+
+    @Override
+    public Customer updateCustomer(Customer customer) {
+        return null;
+    }
+
+    @Override
+    public void deleteCustomer(Customer customer) {
+
     }
 
     @Override
@@ -58,5 +70,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     public boolean existsCustomerById(Integer id) {
         return true;
     }
+
+
 
 }

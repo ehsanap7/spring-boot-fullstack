@@ -1,6 +1,7 @@
 package com.ehsan;
 
 import com.ehsan.model.customer.Customer;
+import com.ehsan.model.enums.Gender;
 import com.ehsan.repository.ICustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,9 +20,15 @@ public class Main {
     @Bean
     public CommandLineRunner runner(ICustomerRepository iCustomerRepository) {
         return args -> {
-            iCustomerRepository.save(new Customer("Ehsan","eap.it95@gmail.com",27));
-            iCustomerRepository.save(new Customer("Saeed","saeed.it95@gmail.com",27));
-            iCustomerRepository.save(new Customer("Hamid","hamid.it95@gmail.com",27));
+            iCustomerRepository.save(new Customer("Ehsan","eap.it95@gmail.com",27, Gender.MALE));
+            iCustomerRepository.save(new Customer("Zahraaaa","zahra95@gmail.com",27, Gender.FEMALE));
+            iCustomerRepository.save(new Customer("AliEhsan","eap.it95555@gmail.com",27, Gender.MALE));
+            iCustomerRepository.save(new Customer("Melisa","eap.it95@gmail.com",27, Gender.FEMALE));
+            iCustomerRepository.save(new Customer("Sydney","eap.it95@gmail.com",27, Gender.FEMALE));
+            iCustomerRepository.save(new Customer("Zahra","eap.it95@gmail.com",27, Gender.FEMALE));
+            iCustomerRepository.save(new Customer("Jack","eap.it95@gmail.com",27, Gender.MALE));
+            iCustomerRepository.save(new Customer("Pop","eap.it95@gmail.com",27, Gender.MALE));
+            iCustomerRepository.save(new Customer("Xi","eap.it95@gmail.com",27, Gender.MALE));
         };
     }
 

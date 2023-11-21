@@ -1,5 +1,6 @@
 package com.ehsan.service;
 
+import com.ehsan.exceptions.ConflictError;
 import com.ehsan.exceptions.ResourceNotFound;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.repository.CustomerDAO;
@@ -28,8 +29,33 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void insertCustomer(Customer customer) {
-        customerDAO.insertCustomer(customer);
+    public Customer insertCustomer(Customer customer) {
+        if (existsCustomerByEmail(customer.getEmail())) {
+            throw new ConflictError("Email [%s] is repeated".formatted(customer.getEmail()));
+        } else {
+            return customerDAO.insertCustomer(customer);
+        }
+    }
+
+    @Override
+    public Customer updateCustomer(Customer customer) {
+        Customer old = getCustomer(customer.getId());
+        if (!old.getEmail().equals(customer.getEmail()) && existsCustomerByEmail(customer.getEmail())) {
+            throw new ConflictError("Email [%s] is repeated".formatted(customer.getEmail()));
+        } else {
+            return customerDAO.updateCustomer(customer);
+        }
+    }
+
+    @Override
+    public Boolean deleteCustomer(Integer customerId) {
+        try {
+            Customer customer = getCustomer(customerId);
+            customerDAO.deleteCustomer(customer);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override

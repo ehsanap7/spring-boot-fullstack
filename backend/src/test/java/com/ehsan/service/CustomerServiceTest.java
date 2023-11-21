@@ -2,6 +2,7 @@ package com.ehsan.service;
 
 import com.ehsan.exceptions.ResourceNotFound;
 import com.ehsan.model.customer.Customer;
+import com.ehsan.model.enums.Gender;
 import com.ehsan.repository.CustomerDAO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +55,8 @@ class CustomerServiceTest {
                 id,
                 "Ehsan",
                 "eap.it95@gmail.com",
-                25
+                25,
+                Gender.MALE
         );
 
         when(customerDAO.getCustomer(id)).thenReturn(Optional.of(customer));
