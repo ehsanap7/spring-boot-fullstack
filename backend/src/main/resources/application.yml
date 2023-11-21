@@ -9,7 +9,7 @@ cors:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/customer
+    url: jdbc:postgresql://awseb-e-qumepevsae-stack-awsebrdsdatabase-h4fyt4echusr.cnsgxpoq2itt.us-east-1.rds.amazonaws.com:5432/customer
     username: ehsanap
     password: ehsan123
   jpa:

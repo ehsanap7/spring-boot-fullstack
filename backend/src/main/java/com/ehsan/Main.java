@@ -20,7 +20,7 @@ public class Main {
     @Bean
     public CommandLineRunner runner(ICustomerRepository iCustomerRepository) {
         return args -> {
-            iCustomerRepository.save(new Customer("Ehsan2020","eap.it95@gmail.com",27, Gender.MALE));
+            iCustomerRepository.save(new Customer("Ehsan20201","eap.it95@gmail.com",27, Gender.MALE));
             iCustomerRepository.save(new Customer("Zahraaaa2020","zahra95@gmail.com",27, Gender.FEMALE));
             iCustomerRepository.save(new Customer("AliEhsan","eap.it95555@gmail.com",27, Gender.MALE));
             iCustomerRepository.save(new Customer("Melisa","eap.it95@gmail.com",27, Gender.FEMALE));
