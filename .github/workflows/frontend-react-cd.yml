@@ -32,8 +32,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: List directory contents
-        run: ls
+      - name: Change permissions
+        run: chmod +r Dockerfile
 
       - name: Docker Build and Publish
         uses: docker/build-push-action@v2
