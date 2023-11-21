@@ -15,7 +15,7 @@ const CreateCustomerDrawer = ({ fetchCustomers }) => {
     const {isOpen, onOpen, onClose} = useDisclosure()
     return <>
         <Button colorScheme={"teal"} leftIcon={<AddIcon/>} onClick={onOpen} >
-            Creating Customer
+            Creating AA Customer
         </Button>
         <Drawer isOpen={isOpen} onClose={onClose} size={"lg"}>
             <DrawerOverlay/>

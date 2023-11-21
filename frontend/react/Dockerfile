@@ -4,7 +4,7 @@ WORKDIR /app
 COPY frontend/react/package*.json ./
 RUN ls -la
 RUN npm cache clean --force
-RUN npm install --verbose
+RUN npm install --silent
 COPY frontend/react/ .
 RUN echo "VITE_API_BASE_URL=${api_base_url}" > .env
 EXPOSE 5173
@@ -16,7 +16,7 @@ CMD ["npm", "run", "dev"]
 #WORKDIR /app
 #COPY package*.json .
 #RUN npm cache clean --force
-#RUN npm install --verbose
+#RUN npm install --silent
 #COPY . .
 #RUN echo "VITE_API_BASE_URL=${api_base_url}" > .env
 #EXPOSE 5173
