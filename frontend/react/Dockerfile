@@ -1,8 +1,9 @@
-FROM node:20-alpine
+FROM node:20.9.0-alpine
 ARG api_base_url
 WORKDIR /app
 COPY package*.json .
-RUN npm i --silent
+RUN npm cache clean --force
+RUN npm install --verbose
 COPY . .
 RUN echo "VITE_API_BASE_URL=${api_base_url}" > .env
 EXPOSE 5173
