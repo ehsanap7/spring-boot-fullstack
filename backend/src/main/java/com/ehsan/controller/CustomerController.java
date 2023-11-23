@@ -29,13 +29,7 @@ public class CustomerController {
     }
 
     @PostMapping("api/v1/insert")
-    public ResponseEntity<?> insertCustomer(@RequestBody Customer customer) {
-        try {
-            return ResponseEntity.ok(iCustomerService.insertCustomer(customer));
-        } catch (ConflictError e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
-    }
+    public void insertCustomer(@RequestBody Customer customer) { iCustomerService.insertCustomer(customer); }
 
     @PutMapping("api/v1/update")
     public void updateCustomer(@RequestBody Customer customer) {
