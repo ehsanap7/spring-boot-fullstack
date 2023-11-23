@@ -1,6 +1,8 @@
 package com.ehsan.service;
 
 import com.ehsan.exceptions.ConflictError;
+import com.ehsan.exceptions.DuplicateResourceException;
+import com.ehsan.exceptions.RequestValidationException;
 import com.ehsan.exceptions.ResourceNotFound;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.repository.CustomerDAO;
@@ -38,25 +40,50 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
-        Customer old = getCustomer(customer.getId());
-        if (!old.getEmail().equals(customer.getEmail()) && existsCustomerByEmail(customer.getEmail())) {
-            throw new ConflictError("Email [%s] is repeated".formatted(customer.getEmail()));
-        } else {
-            return customerDAO.updateCustomer(customer);
+    public void updateCustomer(Customer updateRequest) {
+        Customer customer = getCustomer(updateRequest.getId());
+        boolean changes = false;
+
+        if (updateRequest.getName() != null && !updateRequest.getName().equals(customer.getName())) {
+            customer.setName(updateRequest.getName());
+            changes = true;
         }
+
+        if (updateRequest.getAge() != null && !updateRequest.getAge().equals(customer.getAge())) {
+            customer.setAge(updateRequest.getAge());
+            changes = true;
+        }
+
+        if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(customer.getEmail())) {
+            if (customerDAO.existsCustomerByEmail(updateRequest.getEmail())) {
+                throw new DuplicateResourceException("Email already taken");
+            }
+            customer.setEmail(updateRequest.getEmail());
+            changes = true;
+        }
+
+        if (updateRequest.getGender() != null && !updateRequest.getGender().equals(customer.getGender())) {
+            customer.setGender(updateRequest.getGender());
+            changes = true;
+        }
+
+        if (!changes) {
+            throw new RequestValidationException("No data changes found");
+        }
+
+        customerDAO.updateCustomer(customer);
     }
 
-    @Override
-    public Boolean deleteCustomer(Integer customerId) {
-        try {
-            Customer customer = getCustomer(customerId);
-            customerDAO.deleteCustomer(customer);
-            return true;
-        } catch (Exception e) {
-            return false;
+    public void deleteCustomerById(Integer customerId) {
+        if (!customerDAO.existsCustomerById(customerId)) {
+            throw new ResourceNotFound(
+                    "Customer with id [%s] not found".formatted(customerId)
+            );
         }
+
+        customerDAO.deleteCustomerById(customerId);
     }
+
 
     @Override
     public boolean existsCustomerByEmail(String email) {

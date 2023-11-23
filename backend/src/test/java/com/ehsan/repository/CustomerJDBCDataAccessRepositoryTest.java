@@ -11,7 +11,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
 
@@ -29,34 +28,35 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
     @Test
     void getCustomers() {
         //given
-        Customer customer = new Customer(
+        Customer expectedCustomer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
                 20,
                 Gender.MALE
         );
-        underTest.insertCustomer(customer);
+        underTest.insertCustomer(expectedCustomer);
+
         //when
-        List<Customer> expectedCustomers = underTest.getCustomers();
+        List<Customer> retrievedCustomers = underTest.getCustomers();
 
         //then
-        assertThat(expectedCustomers).isNotEmpty();
+        assertThat(retrievedCustomers).isNotEmpty();
     }
 
     @Test
     void getCustomer() {
         //Give
-        String emial = faker.internet().safeEmailAddress() + "-" + UUID.randomUUID();
+        String email = faker.internet().safeEmailAddress() + "-" + UUID.randomUUID();
         Customer customer = new Customer(
                 faker.name().firstName(),
-                emial,
+                email,
                 20,
                 Gender.MALE
         );
         underTest.insertCustomer(customer);
         int id = underTest.getCustomers()
                 .stream()
-                .filter(c -> c.getEmail().equals(emial))
+                .filter(c -> c.getEmail().equals(email))
                 .map(Customer::getId)
                 .findFirst()
                 .orElseThrow();
@@ -71,4 +71,155 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
             assertThat(c.getAge()).isEqualTo(customer.getAge());
         });
     }
+
+    @Test
+    void willReturnEmptyWhenSelectCustomerById() {
+        //Give
+        int id = -1;
+
+        //When
+        var actual = underTest.getCustomer(id);
+
+        //Then
+        assertThat(actual).isEmpty();
+    }
+
+
+    @Test
+    void insertCustomer() {
+        //Give
+        Customer expectedCustomer = new Customer(
+                faker.name().firstName(),
+                faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
+                20,
+                Gender.MALE
+        );
+
+        //When
+        Customer actualCustomers = underTest.insertCustomer(expectedCustomer);
+
+        //Then
+        assertThat(actualCustomers).isNotNull();
+        assertThat(actualCustomers.getName()).isEqualTo(expectedCustomer.getName());
+        assertThat(actualCustomers.getEmail()).isEqualTo(expectedCustomer.getEmail());
+        assertThat(actualCustomers.getAge()).isEqualTo(expectedCustomer.getAge());
+        assertThat(actualCustomers.getGender()).isEqualTo(expectedCustomer.getGender());
+
+    }
+
+    @Test
+    void updateCustomer() {
+        //Give
+        Customer originalCustomer = new Customer(
+                faker.name().firstName(),
+                faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
+                20,
+                Gender.MALE
+        );
+        Customer originalCustomerId = underTest.insertCustomer(originalCustomer);
+
+        Customer updatedCustomer = new Customer(
+                originalCustomerId.getId(),
+                "New Name",
+                "new.email@example.com",
+                25,
+                Gender.FEMALE
+        );
+
+
+        //When
+        Customer actualCustomer = underTest.updateCustomer(updatedCustomer);
+
+        //Then
+        assertThat(actualCustomer).isNotNull();
+        assertThat(actualCustomer.getName()).isEqualTo(updatedCustomer.getName());
+        assertThat(actualCustomer.getEmail()).isEqualTo(updatedCustomer.getEmail());
+        assertThat(actualCustomer.getAge()).isEqualTo(updatedCustomer.getAge());
+        assertThat(actualCustomer.getGender()).isEqualTo(updatedCustomer.getGender());
+
+    }
+
+    @Test
+    void deleteCustomer() {
+        //Give
+        Customer customer = new Customer(
+                faker.name().firstName(),
+                faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
+                20,
+                Gender.MALE
+        );
+        Customer insertedCustomer = underTest.insertCustomer(customer);
+
+        //When
+        underTest.deleteCustomerById(insertedCustomer.getId());
+
+        //Then
+        Optional<Customer> deletedCustomer = underTest.getCustomer(insertedCustomer.getId());
+        assertThat(deletedCustomer).isNotPresent();
+    }
+
+    @Test
+    void existsCustomerByEmail() {
+        //Give
+        String email = faker.internet().safeEmailAddress() + "-" + UUID.randomUUID();
+        Customer customer = new Customer(
+                faker.name().firstName(),
+                email,
+                20,
+                Gender.MALE
+        );
+        underTest.insertCustomer(customer);
+
+        //When
+        var actual = underTest.existsCustomerByEmail(email);
+
+        //Then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void existsCustomerByEmail_WithNonExistingEmail_ReturnsFalse() {
+        //Give
+        String nonExistingEmail = "nonexisting.email@example.com";
+
+        //When
+        var actual = underTest.existsCustomerByEmail(nonExistingEmail);
+
+        //Then
+        assertThat(actual).isFalse();
+
+    }
+
+    @Test
+    void existsCustomerById() {
+        //Give
+        Customer customer = new Customer(
+                faker.name().firstName(),
+                faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
+                20,
+                Gender.MALE
+        );
+        Customer insertedCustomer = underTest.insertCustomer(customer);
+
+        //When
+        var actual = underTest.existsCustomerById(insertedCustomer.getId());
+
+
+        //Then
+        assertThat(actual).isTrue();
+
+    }
+
+    @Test
+    void existsCustomerById_WithNonExistingId_ReturnsFalse() {
+        //Given
+        Integer nonExistingId = -1;
+
+        //When
+        var actual = underTest.existsCustomerById(nonExistingId);
+
+        //Then
+        assertThat(actual).isFalse();
+    }
+
 }

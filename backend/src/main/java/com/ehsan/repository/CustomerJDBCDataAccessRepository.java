@@ -38,39 +38,65 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
 
     @Override
     public Customer insertCustomer(Customer customer) {
-        var sql = """
+        final var sql = """
                 INSERT INTO customer (name, email, age, gender)
-                values (?,?,?,?)
+                VALUES (?, ?, ?, ?)
+                RETURNING id
                 """;
-        int result = jdbcTemplate.update(sql,
+
+        Integer id = jdbcTemplate.queryForObject(sql, new Object[]{
                 customer.getName(),
                 customer.getEmail(),
                 customer.getAge(),
                 customer.getGender().name()
-        );
-        return getCustomer(result).orElseThrow();
+        }, Integer.class);
+        return getCustomer(id).get();
     }
 
     @Override
     public Customer updateCustomer(Customer customer) {
-        return null;
+        var sql = """
+                UPDATE customer
+                SET name = ?, email = ?, age = ?, gender = ?
+                WHERE id = ?
+                """;
+        jdbcTemplate.update(sql,
+                customer.getName(),
+                customer.getEmail(),
+                customer.getAge(),
+                customer.getGender().name(),
+                customer.getId());
+        return getCustomer(customer.getId()).get();
     }
 
     @Override
-    public void deleteCustomer(Customer customer) {
-
+    public void deleteCustomerById(Integer customerId) {
+        var sql = """
+                DELETE FROM customer
+                WHERE id = ?
+                """;
+        jdbcTemplate.update(sql, customerId);
     }
 
-    @Override
     public boolean existsCustomerByEmail(String email) {
-        return true;
+        var sql = """
+                select count(*)
+                from customer
+                where email = ?
+                """;
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
     }
 
     @Override
     public boolean existsCustomerById(Integer id) {
-        return true;
+        var sql = """
+                select count(*)
+                from customer
+                where id = ?
+                """;
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count > 0;
     }
-
-
 
 }

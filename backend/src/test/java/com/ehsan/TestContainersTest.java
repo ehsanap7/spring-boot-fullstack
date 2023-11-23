@@ -20,4 +20,8 @@ public class TestContainersTest extends AbstractTestContainer{
         assertThat(postgreSQLContainer.isCreated()).isTrue();
     }
 
+
+
+
+
 }

@@ -42,7 +42,7 @@ public abstract class AbstractTestContainer {
                 postgreSQLContainer::getPassword);
     }
 
-    private static DataSource getDataSource(){
+    private static DataSource getDataSource() {
         return DataSourceBuilder.create()
                 .driverClassName(postgreSQLContainer.getDriverClassName())
                 .url(postgreSQLContainer.getJdbcUrl())
@@ -50,7 +50,7 @@ public abstract class AbstractTestContainer {
                 .password(postgreSQLContainer.getPassword()).build();
     }
 
-    protected static JdbcTemplate getJDBCTemplate(){
+    protected static JdbcTemplate getJDBCTemplate() {
         return new JdbcTemplate(getDataSource());
     }
 

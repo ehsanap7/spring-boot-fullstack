@@ -35,8 +35,8 @@ public class CustomerRepository implements CustomerDAO {
     }
 
     @Override
-    public void deleteCustomer(Customer customer) {
-        iCustomerRepository.delete(customer);
+    public void deleteCustomerById(Integer customerId) {
+        iCustomerRepository.deleteById(customerId);
     }
 
     @Override

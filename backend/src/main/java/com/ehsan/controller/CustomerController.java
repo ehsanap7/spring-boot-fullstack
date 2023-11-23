@@ -29,26 +29,22 @@ public class CustomerController {
     }
 
     @PostMapping("api/v1/insert")
-    public ResponseEntity<?> insertCustomer(@RequestBody Customer customer){
+    public ResponseEntity<?> insertCustomer(@RequestBody Customer customer) {
         try {
             return ResponseEntity.ok(iCustomerService.insertCustomer(customer));
-        }catch (ConflictError e) {
+        } catch (ConflictError e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
     @PutMapping("api/v1/update")
-    public ResponseEntity<?> updateCustomer(@RequestBody Customer customer) {
-        try {
-            return ResponseEntity.ok(iCustomerService.updateCustomer(customer));
-        }catch (ConflictError e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
+    public void updateCustomer(@RequestBody Customer customer) {
+        iCustomerService.updateCustomer(customer);
     }
 
     @DeleteMapping("api/v1/customer/delete/{id}")
-    public Boolean deleteCustomer(@PathVariable("id") Integer id) {
-        return iCustomerService.deleteCustomer(id);
+    public void deleteCustomer(@PathVariable("id") Integer id) {
+        iCustomerService.deleteCustomerById(id);
     }
 
 }

@@ -12,8 +12,8 @@ public interface ICustomerService {
     Customer getCustomer(Integer id);
 
     Customer insertCustomer(Customer customer);
-    Customer updateCustomer(Customer customer);
-    Boolean deleteCustomer(Integer id);
+    void updateCustomer(Customer updateRequest);
+    void deleteCustomerById(Integer id);
     boolean existsCustomerByEmail(@Param("email") String email);
     boolean existsCustomerById(Integer id);
 
