@@ -12,5 +12,6 @@ public interface ICustomerRepository extends JpaRepository<Customer, Integer> {
 
     boolean existsCustomerByEmail(@Param("email") String email);
     boolean existsCustomerById(Integer id);
+    Optional<Customer> getCustomersByEmail(String email);
 
 }

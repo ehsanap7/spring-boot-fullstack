@@ -31,7 +31,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer expectedCustomer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         underTest.insertCustomer(expectedCustomer);
@@ -50,7 +50,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE
         );
         underTest.insertCustomer(customer);
@@ -91,7 +91,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer expectedCustomer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
 
@@ -113,7 +113,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer originalCustomer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         Customer originalCustomerId = underTest.insertCustomer(originalCustomer);
@@ -122,7 +122,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
                 originalCustomerId.getId(),
                 "New Name",
                 "new.email@example.com",
-                25,
+                "password", 25,
                 Gender.FEMALE
         );
 
@@ -145,7 +145,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         Customer insertedCustomer = underTest.insertCustomer(customer);
@@ -165,7 +165,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE
         );
         underTest.insertCustomer(customer);
@@ -196,7 +196,7 @@ class CustomerJDBCDataAccessRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 faker.internet().safeEmailAddress() + "-" + UUID.randomUUID(),
-                20,
+                "password", 20,
                 Gender.MALE
         );
         Customer insertedCustomer = underTest.insertCustomer(customer);

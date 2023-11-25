@@ -1,6 +1,7 @@
 package com.ehsan.repository;
 
 import com.ehsan.AbstractTestContainer;
+import com.ehsan.TestConfig;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.model.enums.Gender;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Import;
 
 import java.util.UUID;
 
@@ -16,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class ICustomerRepositoryTest extends AbstractTestContainer {
 
     @Autowired
@@ -37,7 +40,7 @@ class ICustomerRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE
         );
 
@@ -64,7 +67,7 @@ class ICustomerRepositoryTest extends AbstractTestContainer {
         Customer customer = new Customer(
                 faker.name().firstName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE
         );
 

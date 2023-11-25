@@ -34,7 +34,7 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = faker.internet().emailAddress();
         int age = random.nextInt(1, 100);
-        Customer request = new Customer(name, email, age, Gender.MALE);
+        Customer request = new Customer(name, email, "password", age, Gender.MALE);
 
         // Send a post request
         webTestClient.post()
@@ -60,7 +60,7 @@ public class CustomerIntegrationTest {
 
 
         // Make sure that customer is present
-        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
+        Customer expectedCustomer = new Customer(name, email, "password", age, Gender.MALE);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -90,7 +90,7 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = faker.internet().emailAddress();
         int age = random.nextInt(1, 100);
-        Customer request = new Customer(name, email, age, Gender.MALE);
+        Customer request = new Customer(name, email, "password", age, Gender.MALE);
 
         // Insert a Customer
         webTestClient.post()
@@ -116,7 +116,7 @@ public class CustomerIntegrationTest {
 
 
         // Make sure that customer is present
-        Customer expectedCustomer = new Customer(name, email, age, Gender.MALE);
+        Customer expectedCustomer = new Customer(name, email, "password", age, Gender.MALE);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(expectedCustomer);
@@ -153,7 +153,7 @@ public class CustomerIntegrationTest {
         String name = fakerName.fullName();
         String email = faker.internet().emailAddress();
         int age = random.nextInt(1, 100);
-        Customer request = new Customer(name, email, age, Gender.MALE);
+        Customer request = new Customer(name, email, "password", age, Gender.MALE);
 
         // Insert a Customer
         webTestClient.post()
@@ -179,7 +179,7 @@ public class CustomerIntegrationTest {
 
 
         // Make sure that customer is present
-        Customer insertedCustomer = new Customer(name, email, age, Gender.MALE);
+        Customer insertedCustomer = new Customer(name, email, "password", age, Gender.MALE);
         assertThat(allCustomers)
                 .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                 .contains(insertedCustomer);
@@ -192,7 +192,7 @@ public class CustomerIntegrationTest {
         String updatedName = updatedFakerName.fullName();
         String updatedEmail = faker.internet().emailAddress();
         int updatedAge = random.nextInt(1, 100);
-        Customer updatedRequest = new Customer(actualCustomer.getId(), updatedName, updatedEmail, updatedAge, Gender.FEMALE);
+        Customer updatedRequest = new Customer(actualCustomer.getId(), updatedName, updatedEmail, "password", updatedAge, Gender.FEMALE);
 
         // Update the customer
         webTestClient.put()
@@ -218,7 +218,7 @@ public class CustomerIntegrationTest {
                 .getResponseBody();
 
         // Test
-        Customer expectedCustomer = new Customer(updatedRequest.getId(), updatedName, updatedEmail, updatedAge, Gender.FEMALE);
+        Customer expectedCustomer = new Customer(updatedRequest.getId(), updatedName, updatedEmail, "password", updatedAge, Gender.FEMALE);
         assertThat(result).isEqualTo(expectedCustomer);
 
     }

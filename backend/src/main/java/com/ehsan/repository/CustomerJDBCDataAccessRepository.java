@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("two")
+@Repository("jdbc")
 public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     private final JdbcTemplate jdbcTemplate;
     private final CustomerRowMapper customerRowMapper;
@@ -20,7 +20,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     @Override
     public List<Customer> getCustomers() {
         var sql = """
-                select id, name, email, age, gender
+                select id, name, email, password, age, gender
                 from customer
                 """;
         return jdbcTemplate.query(sql, customerRowMapper);
@@ -29,7 +29,7 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     @Override
     public Optional<Customer> getCustomer(Integer id) {
         var sql = """
-                select id, name, email, age, gender
+                select id, name, email, password, age, gender
                 from customer
                 where id = ?
                 """;
@@ -39,14 +39,15 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     @Override
     public Customer insertCustomer(Customer customer) {
         final var sql = """
-                INSERT INTO customer (name, email, age, gender)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO customer (name, email, password, age, gender)
+                VALUES (?, ?, ?, ?, ?)
                 RETURNING id
                 """;
 
         Integer id = jdbcTemplate.queryForObject(sql, new Object[]{
                 customer.getName(),
                 customer.getEmail(),
+                customer.getPassword(),
                 customer.getAge(),
                 customer.getGender().name()
         }, Integer.class);
@@ -57,12 +58,13 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
     public Customer updateCustomer(Customer customer) {
         var sql = """
                 UPDATE customer
-                SET name = ?, email = ?, age = ?, gender = ?
+                SET name = ?, email = ?, password = ?, age = ?, gender = ?
                 WHERE id = ?
                 """;
         jdbcTemplate.update(sql,
                 customer.getName(),
                 customer.getEmail(),
+                customer.getPassword(),
                 customer.getAge(),
                 customer.getGender().name(),
                 customer.getId());
@@ -97,6 +99,16 @@ public class CustomerJDBCDataAccessRepository implements CustomerDAO {
                 """;
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
         return count != null && count > 0;
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        var sql = """
+                select id, name, email, password, age, gender
+                from customer
+                where email = ?
+                """;
+        return jdbcTemplate.query(sql, customerRowMapper, email).stream().findFirst();
     }
 
 }

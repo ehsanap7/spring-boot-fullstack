@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("one")
+@Repository("jpa")
 public class CustomerRepository implements CustomerDAO {
 
     private final ICustomerRepository iCustomerRepository;
@@ -29,6 +29,7 @@ public class CustomerRepository implements CustomerDAO {
     public Customer insertCustomer(Customer customer) {
         return iCustomerRepository.save(customer);
     }
+
     @Override
     public Customer updateCustomer(Customer customer) {
         return iCustomerRepository.save(customer);
@@ -47,5 +48,10 @@ public class CustomerRepository implements CustomerDAO {
     @Override
     public boolean existsCustomerById(Integer id) {
         return iCustomerRepository.existsCustomerById(id);
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        return iCustomerRepository.getCustomersByEmail(email);
     }
 }

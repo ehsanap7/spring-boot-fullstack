@@ -10,8 +10,6 @@ import org.junit.jupiter.api.Test;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class CustomerRowMapperTest {
 
     @Test
@@ -29,7 +27,7 @@ class CustomerRowMapperTest {
         CustomerRowMapper customerRowMapper = new CustomerRowMapper();
         Customer result = customerRowMapper.mapRow(resultSet, 1);
 
-        Customer expectedCustomer = new Customer(1,"Jack","jack@gmail.com",20,Gender.MALE);
+        Customer expectedCustomer = new Customer(1,"Jack","jack@gmail.com", "password", 20,Gender.MALE);
 
         //Then
         assertThat(expectedCustomer).isEqualTo(result);

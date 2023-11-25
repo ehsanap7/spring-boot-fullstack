@@ -1,9 +1,9 @@
 package com.ehsan.controller;
 
-import com.ehsan.exceptions.ConflictError;
+import com.ehsan.jwt.JWTUtil;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.service.ICustomerService;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +14,11 @@ public class CustomerController {
 
     private final ICustomerService iCustomerService;
 
-    public CustomerController(ICustomerService iCustomerService) {
+    private final JWTUtil jwtUtil;
+
+    public CustomerController(ICustomerService iCustomerService, JWTUtil jwtUtil) {
         this.iCustomerService = iCustomerService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("api/v1/customer")
@@ -29,7 +32,12 @@ public class CustomerController {
     }
 
     @PostMapping("api/v1/insert")
-    public void insertCustomer(@RequestBody Customer customer) { iCustomerService.insertCustomer(customer); }
+    public ResponseEntity<?> insertCustomer(@RequestBody Customer customer) {
+        iCustomerService.insertCustomer(customer);
+        String jwtToken = jwtUtil.issueToken(customer.getEmail(), "ROLE_USER");
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, jwtToken).build();
+    }
 
     @PutMapping("api/v1/update")
     public void updateCustomer(@RequestBody Customer customer) {

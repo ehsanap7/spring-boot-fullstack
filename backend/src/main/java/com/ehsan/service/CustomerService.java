@@ -7,6 +7,7 @@ import com.ehsan.exceptions.ResourceNotFound;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.repository.CustomerDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,11 @@ public class CustomerService implements ICustomerService {
 
     private final CustomerDAO customerDAO;
 
-    public CustomerService(@Qualifier("one") CustomerDAO customerDAO) {
+    private final PasswordEncoder passwordEncoder;
+
+    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -35,6 +39,7 @@ public class CustomerService implements ICustomerService {
         if (existsCustomerByEmail(customer.getEmail())) {
             throw new ConflictError("Email [%s] is repeated".formatted(customer.getEmail()));
         } else {
+            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             return customerDAO.insertCustomer(customer);
         }
     }
