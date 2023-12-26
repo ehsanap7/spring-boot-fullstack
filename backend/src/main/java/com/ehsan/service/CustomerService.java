@@ -1,9 +1,12 @@
 package com.ehsan.service;
 
+import com.ehsan.dto.CustomerDTO;
+import com.ehsan.dto.CustomerRegistrationDto;
 import com.ehsan.exceptions.ConflictError;
 import com.ehsan.exceptions.DuplicateResourceException;
 import com.ehsan.exceptions.RequestValidationException;
 import com.ehsan.exceptions.ResourceNotFound;
+import com.ehsan.mapper.CustomerDTOMapper;
 import com.ehsan.model.customer.Customer;
 import com.ehsan.repository.CustomerDAO;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,64 +14,76 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements ICustomerService {
 
     private final CustomerDAO customerDAO;
 
+    private final CustomerDTOMapper customerDTOMapper;
+
     private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, PasswordEncoder passwordEncoder) {
+    public CustomerService(@Qualifier("jpa") CustomerDAO customerDAO, CustomerDTOMapper customerDTOMapper, PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
+        this.customerDTOMapper = customerDTOMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
 
-    public List<Customer> getCustomers() {
-        return customerDAO.getCustomers();
+    public List<CustomerDTO> getCustomers() {
+        return customerDAO.getCustomers()
+                .stream().map(customerDTOMapper).collect(Collectors.toList());
     }
 
-    public Customer getCustomer(Integer id) {
+    public CustomerDTO getCustomer(Integer id) {
         return customerDAO.getCustomer(id)
+                .map(customerDTOMapper)
                 .orElseThrow(() -> new ResourceNotFound("Customer with id [%s] Not Found".formatted(id)));
     }
 
     @Override
-    public Customer insertCustomer(Customer customer) {
-        if (existsCustomerByEmail(customer.getEmail())) {
-            throw new ConflictError("Email [%s] is repeated".formatted(customer.getEmail()));
+    public Customer insertCustomer(CustomerRegistrationDto customerRegistrationDto) {
+        if (existsCustomerByEmail(customerRegistrationDto.email())) {
+            throw new ConflictError("Email [%s] is repeated".formatted(customerRegistrationDto.email()));
         } else {
+            Customer customer = new Customer(customerRegistrationDto.name()
+                    ,customerRegistrationDto.email()
+                    ,passwordEncoder.encode(customerRegistrationDto.password())
+                    ,customerRegistrationDto.age()
+                    ,customerRegistrationDto.gender());
             customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             return customerDAO.insertCustomer(customer);
         }
     }
 
     @Override
-    public void updateCustomer(Customer updateRequest) {
-        Customer customer = getCustomer(updateRequest.getId());
+    public void updateCustomer(CustomerDTO updateRequest) {
+        Customer customer = customerDAO.getCustomer(updateRequest.id())
+                .orElseThrow(() -> new ResourceNotFound("Customer with id [%s] Not Found".formatted(updateRequest.id())));
         boolean changes = false;
 
-        if (updateRequest.getName() != null && !updateRequest.getName().equals(customer.getName())) {
-            customer.setName(updateRequest.getName());
+        if (updateRequest.name() != null && !updateRequest.name().equals(customer.getName())) {
+            customer.setName(updateRequest.name());
             changes = true;
         }
 
-        if (updateRequest.getAge() != null && !updateRequest.getAge().equals(customer.getAge())) {
-            customer.setAge(updateRequest.getAge());
+        if (updateRequest.age() != null && !updateRequest.age().equals(customer.getAge())) {
+            customer.setAge(updateRequest.age());
             changes = true;
         }
 
-        if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(customer.getEmail())) {
-            if (customerDAO.existsCustomerByEmail(updateRequest.getEmail())) {
+        if (updateRequest.email() != null && !updateRequest.email().equals(customer.getEmail())) {
+            if (customerDAO.existsCustomerByEmail(updateRequest.email())) {
                 throw new DuplicateResourceException("Email already taken");
             }
-            customer.setEmail(updateRequest.getEmail());
+            customer.setEmail(updateRequest.email());
             changes = true;
         }
 
-        if (updateRequest.getGender() != null && !updateRequest.getGender().equals(customer.getGender())) {
-            customer.setGender(updateRequest.getGender());
+        if (updateRequest.gender() != null && !updateRequest.gender().equals(customer.getGender())) {
+            customer.setGender(updateRequest.gender());
             changes = true;
         }
 
