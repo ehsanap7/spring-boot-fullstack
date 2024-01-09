@@ -56,7 +56,7 @@ public class DefaultExceptionHandler {
                 e.getMessage(),
                 HttpStatus.UNAUTHORIZED.value(),
                 LocalDateTime.now());
-        return new ResponseEntity<>(apiError, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
 }
