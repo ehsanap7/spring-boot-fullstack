@@ -8,9 +8,9 @@ public class PingPongController {
 
     record PingPong(String result){}
 
-    @GetMapping("/Ping")
+    @GetMapping("/ping")
     public PingPong getPingPong(){
-        return new PingPong("Pong 3");
+        return new PingPong("pong 3");
     }
 
 }
