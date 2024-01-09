@@ -19,8 +19,8 @@ import {
     AlertDialog,
     AlertDialogFooter, useDisclosure,
 } from '@chakra-ui/react'
-import {deleteCustomer} from "../services/client.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {deleteCustomer} from "../../services/client.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 import React from "react";
 import CreateCustomerDrawer from "./CreateCustomerDrawer.jsx";
 import UpdateCustomerDrawer from "./UpdateCustomerDrawer.jsx";
