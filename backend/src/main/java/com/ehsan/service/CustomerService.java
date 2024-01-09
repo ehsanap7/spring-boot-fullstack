@@ -53,7 +53,6 @@ public class CustomerService implements ICustomerService {
                     ,passwordEncoder.encode(customerRegistrationDto.password())
                     ,customerRegistrationDto.age()
                     ,customerRegistrationDto.gender());
-            customer.setPassword(passwordEncoder.encode(customer.getPassword()));
             return customerDAO.insertCustomer(customer);
         }
     }

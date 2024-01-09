@@ -34,7 +34,9 @@ public class SecurityFilterChainConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/v1/insert")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/insert",
+                                "/api/v1/auth/login")
                         .permitAll()
                         .anyRequest()
                         .authenticated()
@@ -42,7 +44,8 @@ public class SecurityFilterChainConfig {
         http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((exception)-> exception.authenticationEntryPoint(delegatedAuthEntryPoint));
+                .exceptionHandling((exception) -> exception.authenticationEntryPoint(delegatedAuthEntryPoint))
+                .formLogin(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
