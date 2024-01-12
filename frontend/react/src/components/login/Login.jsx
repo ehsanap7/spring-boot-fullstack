@@ -18,6 +18,7 @@ import {useAuth} from "../context/AuthContext.jsx";
 import {errorNotification} from "../../services/notification.js";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import CreateCustomerDrawer from "../customer/CreateCustomerDrawer.jsx";
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
@@ -58,7 +59,6 @@ const LoginForm = () => {
                 setSubmitting(true);
                 login(values).then(res => {
                     navigate("/dashboard");
-                    console.log("Successfully logged in", res);
                 }).catch(err => {
                     errorNotification(
                         err.code,
@@ -84,11 +84,16 @@ const LoginForm = () => {
                                 type={"password"}
                                 placeholder={"Type your Password"}
                             />
-                            <Button
-                                type={"submit"}
-                                disabled={!isValid || isSubmitting}>
-                                Login
-                            </Button>
+                            <Flex justifyContent="space-between">
+                                <Link color={"blue.500"} href={"/signup"}>
+                                    Don't have account? Sign up now.
+                                </Link>
+                                <Button colorScheme='teal' variant='outline'
+                                        type={"submit"}
+                                        disabled={!isValid || isSubmitting}>
+                                    Login
+                                </Button>
+                            </Flex>
                         </Stack>
                     </Form>
                 )
