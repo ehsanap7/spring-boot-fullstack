@@ -14,6 +14,10 @@ import {
 } from '@chakra-ui/react'
 import {Formik, Form, useField} from "formik";
 import * as Yup from 'yup';
+import {useAuth} from "../context/AuthContext.jsx";
+import {errorNotification} from "../../services/notification.js";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
@@ -32,6 +36,10 @@ const MyTextInput = ({label, ...props}) => {
 };
 
 const LoginForm = () => {
+
+    const {login} = useAuth();
+    const navigate = useNavigate();
+
     return (
         <Formik
             validateOnMount={true}
@@ -47,7 +55,17 @@ const LoginForm = () => {
             }
             initialValues={{username: '', password: ''}}
             onSubmit={(values, {setSubmitting}) => {
-                alert(JSON.stringify(values, null, 0));
+                setSubmitting(true);
+                login(values).then(res => {
+                    navigate("/dashboard");
+                    console.log("Successfully logged in", res);
+                }).catch(err => {
+                    errorNotification(
+                        err.code,
+                        err.response.data.message)
+                }).finally(() => {
+                    setSubmitting(false);
+                });
             }}>
 
             {(isValid, isSubmitting) => {
@@ -81,6 +99,14 @@ const LoginForm = () => {
 }
 
 const Login = () => {
+    const {customer} = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (customer) {
+            navigate("/dashboard");
+        }
+    });
     return (
         <Stack minH={'100vh'} direction={{base: 'column', md: 'row'}}>
             <Flex p={8} flex={1} alignItems={'center'} justifyContent={'center'}>

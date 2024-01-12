@@ -4,6 +4,24 @@ import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@c
 import {saveCustomer} from "../../services/client.js";
 import {errorNotification, successNotification} from "../../services/notification.js";
 
+
+const Example = () => {
+    const [value, setValue] = React.useState('')
+    const handleChange = (event) => setValue(event.target.value)
+
+    return (
+        <>
+            <Text mb='8px'>Value: {value}</Text>
+            <Input
+                value={value}
+                onChange={handleChange}
+                placeholder='Here is a sample placeholder'
+                size='sm'
+            />
+        </>
+    )
+}
+
 const MyTextInput = ({label, ...props}) => {
     const [field, meta] = useField(props);
     return (
@@ -42,12 +60,17 @@ const CreateCustomerForm = ({fetchCustomers}) => {
             <Formik
                 initialValues={{
                     name: '',
+                    password: '',
                     email: '',
                     age: 0,
                     gender: '',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
+                        .max(15, 'Must be 15 characters or less')
+                        .required('Required'),
+                    password: Yup.string()
+                        .min(4, 'Must be 4 characters or more')
                         .max(15, 'Must be 15 characters or less')
                         .required('Required'),
                     email: Yup.string()
@@ -92,6 +115,12 @@ const CreateCustomerForm = ({fetchCustomers}) => {
                                 name="name"
                                 type="text"
                                 placeholder="Jane"
+                            />
+
+                            <MyTextInput
+                                label="Password"
+                                name="password"
+                                type="password"
                             />
 
                             <MyTextInput
